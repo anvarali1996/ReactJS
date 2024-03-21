@@ -1,47 +1,51 @@
 import React from "react";
+import { student } from "./mock";
 
 
 class Student extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 1,
-            title: 'Student',
+            data: student,
+            name: 'Anvarjon',
+            surname: 'Sheraliev',
         }
     }
     render() {
-        // console.log("Student");
-        
-        const plus = () => {
-            if (this.state.count < 10) {
-            this.setState({ count: this.state.count + 1 });
-        }
-            
-        };
-        const minus = () => {
-            if (this.state.count > 1) {
-                this.setState({ count: this.state.count - 1 });
-            } else if (this.state.count = 1) {
-                console.log("uzr");
-            }
-           
-        };
-        const onChange = (e) => {
+        const onnameChange = (e) => {
             console.log(e.target.value);
-            this.setState({ title: e.target.value });
+            this.setState({ name: e.target.value });
         };
-        const onCheck = (e) => { console.log(e.target.checked); 
-        if (e.target.checked === true) {
-            console.log("hello");
-        }};
+        const onsurnameChange = (e) => {
+            console.log(e.target.value);
+            this.setState({ surname: e.target.value });
+            if (e.target.value === "jon") {
+                console.log('you CANNOT');
+            }
+        };
+
+        const onFilter = (e) => {
+            console.log(e.target.value);
+            let res = student.filter((value) => value.name.includes(e.target.value));
+            this.setState({
+                data: res,
+            })
+        };
         return (
             <div>
-                <h1>{this.state.title}</h1>
-                <h1>State {this.state.count}</h1>
-                <input onChange={onChange} type="text" placeholder="name" />
-                <input onChange={onCheck} type="checkbox" name="X" id="" />
-                <button onClick={plus}>+</button>
-                <button onClick={minus}>-</button>
+                <h1>name: {this.state.name}</h1>
+                <h1>Surname: {this.state.surname}</h1>
+                <input onChange={onnameChange} type="text" placeholder="name" />
+                <input onChange={onsurnameChange} type="text" placeholder="surname" />
+                <hr />
+                <input onChange={onFilter} type="text" placeholder="filter" />
+                {
+                    this.state.data.map(({ id, name, email }) => {
+                        return (
+                            <h1 key={id}>{id} {name} {email}</h1>
+                        )
+                    })
+                }
             </div>
         )
     }
